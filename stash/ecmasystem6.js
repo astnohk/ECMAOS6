@@ -28,6 +28,8 @@ GlobalEventClass()
 
 
 
+// Time
+var time;
 // User ID
 var userId = "you";
 var onetimepass = "";
@@ -43,20 +45,12 @@ var listBackground = {
     blue: {name: "Blue", color: "rgb(0, 0, 128)"},
     black: {name: "Black", color: "rgb(0, 0, 0)"}};
 // Settings
-var UserSettings = {BackgroundColor: "change"};
-// Date
-var time = new Date();
+var UserSettings = {BackgroundColor: "black"};
 // Window list
 var WindowList = new Array();
-// Calendar
-var poppedUpCalendar = 0; // 0: not popuped, 1: start popup, 2: popup finished
-var yearCalendar = time.getFullYear();
-var monthCalendar = time.getMonth();
-// To-Do
-var poppedUpToDo = 0; // 0: not popuped, 1: start popup, 2: popup finished
 
 //Initialize
-window.onload = Init;
+window.addEventListener("load", initECMASystem6, false);
 
 
 
@@ -73,16 +67,11 @@ globalMouseUpEvent.add(dragWindow);
 
 // ----- INITIALIZE -----
 function
-Init()
+initECMASystem6()
 {
-	// Clock
-	var timeClock = setInterval(updateClock, 1000);
-	// Initial displaying
-	updateClock();
+	var timeClock = setInterval(updateTimeAndBackground, 1000);
 	// Add Window Scroller
 	appendWindowScroller();
-	// Set event on Readme button
-	setReadmeButton();
 	// Event Listener for mouse click or touch
 	window.addEventListener("mousedown", globalClickEvent.doEvent, false);
 	window.addEventListener("touchstart", globalClickEvent.doEvent, false);
@@ -90,90 +79,17 @@ Init()
 	window.addEventListener("touchmove", globalMouseMoveEvent.doEvent, false);
 	window.addEventListener("mouseup", globalMouseUpEvent.doEvent, false);
 	window.addEventListener("touchend", globalMouseUpEvent.doEvent, false);
-	// Encryption
-	initEncryptionToServer();
-	initEncryptionToClient();
-	popupLoginBox();
-}
-
-
-
-// ----- README -----
-function
-setReadmeButton()
-{
-	var doc = document.getElementById("Readme");
-	doc.addEventListener("mousedown", openReadme, false);
-	doc.addEventListener("touchstart", openReadme, false);
-}
-
-function
-openReadme()
-{
-	if (document.getElementById("ReadmeDocument") !== null) {
-		return;
-	}
-	var doc = document.createElement("div");
-	doc.className = "BlackBoard";
-	doc.id = "ReadmeDocument";
-	doc.style.top = "18px";
-	doc.style.left = "40%";
-	doc.style.width = "300px";
-	doc.style.fontSize = "16px";
-	doc.innerHTML =
-	    "This is the demonstration of the window system by ECMAScript 6." +
-	    "<br><br>This User Interfaces are designed for both desktop or tablet PC." +
-	    "The system needs CGI to provide entire the service but here the system serves only client UIs." +
-	    "<br>Each windows could be moved by dragging." +
-	    "Windows are managed by list." +
-	    "You'll see the list on the left 'Window Scroller.'" +
-	    "The system cycles the mostfront window when click on titles or scroll mouse wheels on the scroller.";
-	doc.addEventListener("click", function () { doc.parentNode.removeChild(doc); }, false);
-	document.body.appendChild(doc);
 }
 
 
 
 // ----- REALTIME -----
 function
-updateClock()
+updateTimeAndBackground()
 {
 	time = new Date();
-	var element = document.getElementById("ClockBox");
-	element.innerHTML =
-	    "Date: " +
-	    time.getFullYear() + "/" +
-	    ('0' + (time.getMonth() + 1)).slice(-2)  + "/" +
-	    ('0' + time.getDate()).slice(-2)  + " " +
-	    ('0' + time.getHours()).slice(-2) + ":" +
-	    ('0' + time.getMinutes()).slice(-2) + ":" +
-	    ('0' + time.getSeconds()).slice(-2);
-	// Set background color
-	if (UserSettings.BackgroundColor === "change") {
-		if (time.getMonth() <= 3 || 10 <= time.getMonth()) {
-			if (time.getHours() < 6 || 18 <= time.getHours()) {
-				document.body.style.background = "rgba(10, 10, 0, 1.0)";
-			} else if (time.getHours() < 7 || 17 <= time.getHours()) {
-				document.body.style.background = "rgba(247, 207, 110, 1.0)";
-			} else if (time.getHours() < 8 || 16 <= time.getHours()) {
-				document.body.style.background = "rgba(110, 230, 233, 1.0)";
-			} else {
-				document.body.style.background = "rgba(93, 198, 255, 1.0)";
-			}
-		} else {
-			if (time.getHours() < 4 || 19 <= time.getHours()) {
-				document.body.style.background = "rgba(10, 10, 0, 1.0)";
-			} else if (time.getHours() < 5 || 18 <= time.getHours()) {
-				document.body.style.background = "rgba(247, 207, 110, 1.0)";
-			} else if (time.getHours() < 6 || 17 <= time.getHours()) {
-				document.body.style.background = "rgba(110, 230, 233, 1.0)";
-			} else {
-				document.body.style.background = "rgba(93, 198, 255, 1.0)";
-			}
-		}
-	} else {
-		document.body.style.background = listBackground[UserSettings.BackgroundColor].color;
-	}
+	// Change background color
+	changeBackgroundColor();
 }
 
 
@@ -271,6 +187,7 @@ openChangeBackground()
 	var backgroundChanger =
 	    function (evnt) {
 		    UserSettings.BackgroundColor = evnt.target.id.slice(14);
+		    changeBackgroundColor();
 		    // Reset outline color
 		    var units = document.querySelectorAll("#changeBackground div.BlackBoard div.upperBox span");
 		    for (var i = 0; i < units.length; i++) {
@@ -318,6 +235,37 @@ openChangeBackground()
 	    },
 	    false);
 	box_button.appendChild(save);
+}
+
+function
+changeBackgroundColor()
+{
+	// Set background color
+	if (UserSettings.BackgroundColor === "change") {
+		if (time.getMonth() <= 3 || 10 <= time.getMonth()) {
+			if (time.getHours() < 6 || 18 <= time.getHours()) {
+				document.body.style.background = "rgba(10, 10, 0, 1.0)";
+			} else if (time.getHours() < 7 || 17 <= time.getHours()) {
+				document.body.style.background = "rgba(247, 207, 110, 1.0)";
+			} else if (time.getHours() < 8 || 16 <= time.getHours()) {
+				document.body.style.background = "rgba(110, 230, 233, 1.0)";
+			} else {
+				document.body.style.background = "rgba(93, 198, 255, 1.0)";
+			}
+		} else {
+			if (time.getHours() < 4 || 19 <= time.getHours()) {
+				document.body.style.background = "rgba(10, 10, 0, 1.0)";
+			} else if (time.getHours() < 5 || 18 <= time.getHours()) {
+				document.body.style.background = "rgba(247, 207, 110, 1.0)";
+			} else if (time.getHours() < 6 || 17 <= time.getHours()) {
+				document.body.style.background = "rgba(110, 230, 233, 1.0)";
+			} else {
+				document.body.style.background = "rgba(93, 198, 255, 1.0)";
+			}
+		}
+	} else {
+		document.body.style.background = listBackground[UserSettings.BackgroundColor].color;
+	}
 }
 
 function
