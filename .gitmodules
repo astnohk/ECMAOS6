@@ -1,0 +1,3 @@
+[submodule "lib/jsencrypt"]
+	path = lib/jsencrypt
+	url = https://github.com/travist/jsencrypt.git
