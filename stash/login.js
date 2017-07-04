@@ -14,6 +14,14 @@ var cryptToClient = new JSEncrypt({default_key_size: RSA_key_length});
 var maxEncryptLength = (RSA_key_length / 8) - 11;
 
 
+// User ID
+var userId = "you";
+var onetimepass = "";
+var time;
+
+
+
+
 // ----- Login -----
 
 function
@@ -98,6 +106,62 @@ loginMain()
 			}
 		}
 	    };
+	request.send(query);
+}
+
+
+
+
+// ----- Save & Load settings -----
+
+function
+saveSettings()
+{
+	let request = new XMLHttpRequest();
+	request.open("POST", "cgi-bin/saveSettings.cgi", true);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.onreadystatechange = function () {
+		if (request.readyState == 4) {
+			if (request.status == 200) {
+				console.log(request.responseText);
+				if (request.responseText.indexOf("Error:") >= 0) {
+					console.log("Error: Wrong ID or one-time password");
+				}
+				console.log("settings saved successfully");
+			} else {
+				console.log("Error: Failed to request");
+			}
+		}
+	    };
+	let query = "id=" + encrypt(userId) +
+	    "&onetimepass=" + encrypt(onetimepass) +
+	    "&settings=" + encrypt(JSON.stringify(UserSettings));
+	request.send(query);
+}
+
+function
+loadSettings()
+{
+	let request = new XMLHttpRequest();
+	request.open("POST", "cgi-bin/loadSettings.cgi", true);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.onreadystatechange = function () {
+		if (request.readyState == 4) {
+			if (request.status == 200) {
+				if (request.responseText.indexOf("Error:") >= 0) {
+					console.log("Error: Wrong ID or one-time password");
+				}
+				let tmp = JSON.parse(decrypt(request.responseText));
+				Object.assign(UserSettings, tmp);
+				console.log("settings loaded successfully");
+			} else {
+				console.log("Error: Failed to request");
+			}
+		}
+	    };
+	let query = "id=" + encrypt(userId) +
+	    "&onetimepass=" + encrypt(onetimepass) +
+	    "&pubkey=" + cryptToClient.getPublicKey();
 	request.send(query);
 }
 
