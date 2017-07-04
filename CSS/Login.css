@@ -1,0 +1,37 @@
+@keyframes popupLoginVariance {
+	0% {opacity: 0.0; left: 35%;}
+	100% {opacity: 1.0; left: 40%;}
+}
+#LoginOverlay {
+	z-index: 99;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 20, 0.9);
+	animation-name: popupOpacityVariance;
+	animation-duration: 1.6s;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+}
+#LoginBox {
+	z-index: 100;
+	position: absolute;
+	top: 40%;
+	left: 40%;
+	height: 140px;
+	width: 290px;
+	padding: 7px;
+	outline-style: solid;
+	outline-width: 8px;
+	outline-color: #0080D0;
+	background-color: rgba(200, 255, 255, 0.8);
+	animation-name: popupLoginVariance;
+	animation-duration: 1.2s;
+	animation-timing-function: ease-out;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+}
+

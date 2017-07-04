@@ -1,0 +1,76 @@
+#ScheduleOnCalendarBox {
+	position: absolute;
+	top: 20px;
+	left: 590px;
+	height: 530px;
+	width: 300px;
+	border-style: ridge;
+	border-width: 2px;
+	border-color: #000000;
+	border-radius: 2px;
+	padding: 4px;
+	font-size: 20px;
+	color: #F0F0F0;
+	background-color: rgba(0, 0, 0, 0.9);
+}
+.tableCalendar {
+	table-layout: fixed;
+	position: relative;
+	width: 560px;
+	border-collapse: collapse;
+	color: #000000;
+}
+th {
+	position: relative;
+	height: 25px;
+	border-collapse: collapse;
+	border-top: 1px solid #0040F0;
+	border-right: 1px solid #0040F0;
+	border-bottom: 1px solid #0040F0;
+	border-left: 1px solid #0040F0;
+	background-color: rgba(250, 250, 250, 0.96);
+}
+th.tableCalendar {
+	position: relative;
+	height: 25px;
+	border-collapse: collapse;
+	border-top: 1px solid #0040F0;
+	border-right: 1px solid #0040F0;
+	border-bottom: 1px solid #0040F0;
+	border-left: 1px solid #0040F0;
+	background-color: rgba(255, 255, 255, 0.96);
+}
+td.tableCalendar {
+	position: relative;
+	height: 80px;
+	border-collapse: collapse;
+	border-top: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	vertical-align: top;
+	text-align: left;
+	background-color: rgba(210, 255, 255, 0.96);
+}
+.todayMarkOnCalendar {
+	height: 28px;
+	width: 28px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: #FF4040;
+	border-radius: 14px;
+}
+.scheduleMarkOnCalendar {
+	position: absolute;
+	right: 15px;
+	bottom: 15px;
+	height: 22px;
+	width: 22px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #FF0000;
+	border-radius: 12px;
+	background-color: #D00000;
+	cursor: default;
+}
+
